@@ -1,0 +1,26 @@
+// Nice!Nano v2 Gamepad Button Mappings
+
+overlay {
+    compatible = "nrf52840;nice_nano_v2";
+
+    button-mappings {
+        dpad-left = <GPIO_PIN_FOR_DPAD_LEFT>;
+        dpad-right = <GPIO_PIN_FOR_DPAD_RIGHT>;
+        dpad-up = <GPIO_PIN_FOR_DPAD_UP>;
+        dpad-down = <GPIO_PIN_FOR_DPAD_DOWN>;
+        south = <GPIO_PIN_FOR_SOUTH>;
+        east = <GPIO_PIN_FOR_EAST>;
+        west = <GPIO_PIN_FOR_WEST>;
+        north = <GPIO_PIN_FOR_NORTH>;
+        l1 = <GPIO_PIN_FOR_L1>;
+        r1 = <GPIO_PIN_FOR_R1>;
+        l2 = <GPIO_PIN_FOR_L2>;
+        r2 = <GPIO_PIN_FOR_R2>;
+        l3 = <GPIO_PIN_FOR_L3>;
+        r3 = <GPIO_PIN_FOR_R3>;
+        select = <GPIO_PIN_FOR_SELECT>;
+        start = <GPIO_PIN_FOR_START>;
+        home = <GPIO_PIN_FOR_HOME>;
+        button14 = <GPIO_PIN_FOR_BUTTON14>;
+    };
+}
