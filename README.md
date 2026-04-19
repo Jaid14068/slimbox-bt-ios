@@ -126,6 +126,8 @@ chmod +x build.sh
 docker run --rm -v $(pwd):/workspace/project -w /workspace/project ghcr.io/zephyrproject-rtos/ci:v0.28.6 ./build.sh vatican-cameos
 ```
 
+
+iPad compatibility test - build trigger April 20 2026
 ## TODO
 
 * battery level reporting
