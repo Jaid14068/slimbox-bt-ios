@@ -132,7 +132,7 @@ docker run --rm -v $(pwd):/workspace/project -w /workspace/project ghcr.io/zephy
 * measure and optimize power consumption
 * analog inputs for sticks and triggers
 * compatibility with other platforms
-* figure out why directed advertising doesn't seem to work
+* figure out why directed advertising doesn't seem to work.  
 
 ## License
 
