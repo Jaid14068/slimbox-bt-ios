@@ -2,6 +2,8 @@
 
 _This is a work in progress._
 
+Added ipad compatiblity
+
 This repository contains code for wireless game controller firmware meant to run on Nordic's nRF52 and nRF54L chips.
 
 The following pre-built binaries are provided:
