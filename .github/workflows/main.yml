@@ -1,4 +1,4 @@
-name: Build Firmware
+name: Build Slimbox Firmware
 
 on:
   push:
@@ -10,8 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Test build step
-        run: echo "Workflow is working!"
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip python3-setuptools ninja-build cmake gperf ccache dfu-util device-tree-compiler wget git
+
+      - name: Install west
+        run: pip3 install west
+
+      - name: Initialize west
+        run: |
+          west init -l .
+          west update
+
+      - name: Export Zephyr env
+        run: |
+          west zephyr-export
+
+      - name: Build firmware (Nice!Nano v2)
+        run: |
+          west build -b nice_nano_v2 app --pristine
+
+      - name: Upload UF2
+        uses: actions/upload-artifact@v4
+        with:
+          name: slimbox-nicenano-v2
+          path: build/zephyr/*.uf2
