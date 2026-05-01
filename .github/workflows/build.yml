@@ -1,44 +1,11 @@
-name: build
+- name: Build firmware
+  run: |
+    python3 -m pip install --upgrade pip
+    python3 -m pip install pyelftools
 
-on:
-  push:
-    paths:
-      - 'app/**'
-      - 'west.yml'
-      - 'build.py'
-      - 'builds.json'
-  workflow_call:
+    # verify install (important)
+    python3 -c "import elftools; print('elftools OK')"
 
-defaults:
-  run:
-    shell: bash --noprofile --norc -x -e -o pipefail {0}
-
-jobs:
-  build:
-    runs-on: ubuntu-22.04
-
-    steps:
-      - name: Free up some disk space
-        run: |
-          df -h
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY" /usr/local/lib/android /usr/share/dotnet || true
-          df -h
-
-      - uses: actions/checkout@v4
-
-      # ✅ THIS IS THE MISSING PIECE
-      - name: Install Python dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install pyelftools
-
-      - name: Build firmware
-        run: |
-          ./build.py builds.json > build.sh
-          chmod +x build.sh
-          ./build.sh
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: firmware
-          path: artifacts/*
+    ./build.py builds.json > build.sh
+    chmod +x build.sh
+    ./build.sh
