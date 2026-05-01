@@ -3,33 +3,52 @@
 import json
 import sys
 
+if len(sys.argv) < 2:
+    print("Usage: build.py builds.json", file=sys.stderr)
+    sys.exit(1)
+
 with open(sys.argv[1], "r") as f:
     builds = json.load(f)
 
-print(
-    """#!/bin/bash
+print("""#!/bin/bash
 
-if [[ $# -eq 0 || "$1" != "vatican-cameos" ]]; then
-    echo "This script clobbers the parent directory. It's mostly meant to be used from inside a GitHub workflow. If you're sure you know what you're doing, run it with a 'vatican-cameos' parameter." >&2
+set -x -e -u -o pipefail
+
+if [[ $# -eq 0 ]]; then
+    echo "Usage: ./build.sh <build-name>" >&2
     exit 1
 fi
 
-set -x -e -u -o pipefail
+TARGET=$1
 
 west init -l .
 west update -o=--depth=1 -n
 
-mkdir artifacts
-"""
-)
+mkdir -p artifacts
+""")
 
 for b in builds:
-    prefix = "#" if b.get("disabled", False) else ""
-    extra_params = " ".join(f'-D{param}="{" ".join(values)}"' for param, values in b['extra_params'].items())
-    print(
-        f'{prefix}west build -d build-{b["name"]} -b {b["board"]} app -- -DBOARD_ROOT=${{PWD}}/app {extra_params}'
+    if b.get("disabled", False):
+        continue
+
+    name = b["name"]
+    board = b["board"]
+    built = b["artifact_built_name"]
+    final = b["artifact_final_name"]
+
+    extra_params = " ".join(
+        f'-D{param}="{" ".join(values)}"'
+        for param, values in b.get("extra_params", {}).items()
     )
-    print(
-        f'{prefix}cp build-{b["name"]}/{b["artifact_built_name"]} artifacts/{b["artifact_final_name"]}'
-    )
-    print()
+
+    print(f"""
+if [ "$TARGET" = "{name}" ]; then
+    echo "Building {name}..."
+
+    west build -d build-{name} -b {board} app -- -DBOARD_ROOT=${{PWD}}/app {extra_params}
+
+    cp build-{name}/{built} artifacts/{final}
+
+    echo "Build complete: artifacts/{final}"
+fi
+""")
