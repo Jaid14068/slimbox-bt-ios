@@ -136,6 +136,6 @@ iPad compatibility test - build trigger April 20 2026
 * compatibility with other platforms
 * figure out why directed advertising doesn't seem to work.  
 
-## License
+## License  .
 
 The software in this repository is licensed under the [MIT License](LICENSE).
