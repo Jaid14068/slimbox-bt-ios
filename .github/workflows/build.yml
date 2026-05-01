@@ -1,4 +1,5 @@
 name: build
+
 on:
   push:
     paths:
@@ -6,24 +7,34 @@ on:
       - 'west.yml'
       - 'build.sh'
   workflow_call:
+
 defaults:
   run:
     shell: bash --noprofile --norc -x -e -o pipefail {0}
+
 jobs:
   build:
     runs-on: ubuntu-22.04
+
     steps:
       - name: Free up some disk space
         run: |
           df -h
           sudo rm -rf "$AGENT_TOOLSDIRECTORY" /usr/local/lib/android /usr/share/dotnet || true
           df -h
+
       - uses: actions/checkout@v4
+
       - name: Build
         run: |
           ./build.py builds.json > build.sh
           chmod +x build.sh
-          docker run -v $PWD:/workspace/project -w /workspace/project ghcr.io/zephyrproject-rtos/ci:v0.28.6 ./build.sh vatican-cameos
+
+          docker run -v $PWD:/workspace/project \
+            -w /workspace/project \
+            ghcr.io/zephyrproject-rtos/ci:v0.28.6 \
+            bash -c "pip install pyelftools && ./build.sh vatican-cameos"
+
       - uses: actions/upload-artifact@v4
         with:
           path: artifacts/*
