@@ -2,7 +2,7 @@
 
 _This is a work in progress._
 
-Added ipad compatiblity april 2026.
+Added ipad compatiblity april 2026✓
 
 This repository contains code for wireless game controller firmware meant to run on Nordic's nRF52 and nRF54L chips.
 
