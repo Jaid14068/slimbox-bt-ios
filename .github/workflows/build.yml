@@ -36,7 +36,8 @@ jobs:
             ghcr.io/zephyrproject-rtos/ci:v0.28.6 \
             bash -c "
               python3 -m pip install --upgrade pip &&
-              python3 -m pip install pyelftools &&
+              python3 -m pip install pyelftools --target=/usr/local/lib/python3.11/site-packages &&
+              export PYTHONPATH=/usr/local/lib/python3.11/site-packages &&
               ./build.sh vatican-cameos
             "
 
